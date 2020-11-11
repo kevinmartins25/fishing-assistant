@@ -31,6 +31,16 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
+  db:
+    image: postgres:11-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: main
+      POSTGRES_PASSWORD: main
+      POSTGRES_DB: main
+    ports:
+    - "5432:5432"
+
 volumes:
   caddy_data:
   caddy_config:
