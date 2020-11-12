@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MoonPhaseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 
 /**
  * @ORM\Entity(repositoryClass=MoonPhaseRepository::class)
@@ -23,7 +24,8 @@ class MoonPhase
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=50, columnDefinition="enum('New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent')")
+     * @ORM\Column(name="state", length=5,  type="MoonStateType", nullable=false)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\MoonStateType")
      */
     private $state;
 

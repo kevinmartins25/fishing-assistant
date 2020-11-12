@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201111143932 extends AbstractMigration
+final class Version20201112214232 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,8 +23,8 @@ final class Version20201111143932 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE daylight_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE moon_phase_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE daylight (id INT NOT NULL, date DATE NOT NULL, sunrise TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, sunset TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TYPE moon_state AS ENUM (\'New Moon\', \'Waxing Crescent\', \'First Quarter\', \'Waxing Gibbous\', \'Full Moon\', \'Waning Gibbous\', \'Last Quarter\', \'Waning Crescent\')');
-        $this->addSql('CREATE TABLE moon_phase (id INT NOT NULL, date DATE NOT NULL, state moon_state)');
+        $this->addSql('CREATE TABLE moon_phase (id INT NOT NULL, date DATE NOT NULL, state VARCHAR(255) CHECK(state IN (\'NM\', \'WAXC\', \'FQ\', \'WAXG\', \'FM\', \'WANG\', \'LQ\', \'WANC\')) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN moon_phase.state IS \'(DC2Type:MoonStateType)\'');
     }
 
     public function down(Schema $schema) : void
