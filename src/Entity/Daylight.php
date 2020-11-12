@@ -32,6 +32,11 @@ class Daylight
      */
     private $sunset;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Daylight
     public function setSunset(\DateTimeInterface $sunset): self
     {
         $this->sunset = $sunset;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }
