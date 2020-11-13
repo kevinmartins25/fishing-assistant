@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=DaylightRepository::class)
  *@ApiResource(
- *     collectionOperations={"get"},
+ *     collectionOperations={"get","post"},
  *     itemOperations={"get"}
  * )
  * @ApiFilter(
@@ -44,9 +44,11 @@ class Daylight
     private $sunset;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=City::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $city;
+
 
     public function getId(): ?int
     {
@@ -89,12 +91,12 @@ class Daylight
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): ?City
     {
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?City $city): self
     {
         $this->city = $city;
 

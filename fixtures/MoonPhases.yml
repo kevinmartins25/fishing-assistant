@@ -1,0 +1,6 @@
+parameters:
+  stateArray: ['NM', 'WAXC', 'FQ', 'WAXG', 'FM', 'WANG', 'LQ', 'WANC']
+App\Entity\MoonPhase:
+  moon_phase_:{1..10}:
+    date: <dateTimeBetween('2020-11-01', '2020-11-31')>
+    state: <randomElement($stateArray)>

@@ -1,0 +1,4 @@
+App\Entity\City:
+  city_:{1}:
+    name: "Lyon"
+    country: "France"

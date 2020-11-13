@@ -1,0 +1,6 @@
+App\Entity\Daylight:
+  daylight_:{1..10}:
+    date: <dateTimeBetween('2020-11-01', '2020-11-31')>
+    sunrise: <dateTimeBetween('2020-11-01', '2020-11-31')>
+    sunset: <dateTimeBetween('2020-11-01', '2020-11-31')>
+    city: '@city_*'
