@@ -31,3 +31,6 @@ cache-clear:
 
 composer-require:
 	$(COMPOSER) require $(COMMAND_ARGS)
+
+php-cs-fix:
+	$(DOCKER_COMPOSE) exec php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src

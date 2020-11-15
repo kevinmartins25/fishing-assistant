@@ -11,9 +11,14 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidParameterGroupException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use function count;
+use function gettype;
+use function is_iterable;
+use function sprintf;
 
 /**
  * Invocation matcher which looks for sets of specific parameters in the invocations.
@@ -38,17 +43,17 @@ class ConsecutiveParameters extends StatelessInvocation
     private $invocations = [];
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public function __construct(array $parameterGroups)
     {
         foreach ($parameterGroups as $index => $parameters) {
-            if (!\is_iterable($parameters)) {
+            if (!is_iterable($parameters)) {
                 throw new InvalidParameterGroupException(
-                    \sprintf(
+                    sprintf(
                         'Parameter group #%d must be an array or Traversable, got %s',
                         $index,
-                        \gettype($parameters)
+                        gettype($parameters)
                     )
                 );
             }
@@ -69,14 +74,14 @@ class ConsecutiveParameters extends StatelessInvocation
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws ExpectationFailedException
      *
      * @return bool
      */
     public function matches(BaseInvocation $invocation)
     {
         $this->invocations[] = $invocation;
-        $callIndex           = \count($this->invocations) - 1;
+        $callIndex           = count($this->invocations) - 1;
 
         $this->verifyInvocation($invocation, $callIndex);
 
@@ -112,9 +117,9 @@ class ConsecutiveParameters extends StatelessInvocation
 
         $parameters = $this->parameterGroups[$callIndex];
 
-        if (\count($invocation->getParameters()) < \count($parameters)) {
+        if (count($invocation->getParameters()) < count($parameters)) {
             throw new ExpectationFailedException(
-                \sprintf(
+                sprintf(
                     'Parameter count for invocation %s is too low.',
                     $invocation->toString()
                 )
@@ -124,7 +129,7 @@ class ConsecutiveParameters extends StatelessInvocation
         foreach ($parameters as $i => $parameter) {
             $parameter->evaluate(
                 $invocation->getParameters()[$i],
-                \sprintf(
+                sprintf(
                     'Parameter %s for invocation #%d %s does not match expected ' .
                     'value.',
                     $i,
