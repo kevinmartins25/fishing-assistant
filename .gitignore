@@ -8,3 +8,5 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+### Php-cs-fix ###
+.php_cs.cache

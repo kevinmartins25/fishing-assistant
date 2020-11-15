@@ -7,14 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+
 class Issue2137Test extends PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideBrandService
      *
      * @throws Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testBrandService($provided, $expected): void
     {
@@ -33,8 +37,8 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
      * @dataProvider provideBrandService
      *
      * @throws Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testSomethingElseInvalid($provided, $expected): void
     {
