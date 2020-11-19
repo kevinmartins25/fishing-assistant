@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\PHP;
 
 use PHPUnit\Framework\Exception;
@@ -24,15 +26,13 @@ class WindowsPhpProcess extends DefaultPhpProcess
 {
     public function getCommand(array $settings, string $file = null): string
     {
-        return '"' . parent::getCommand($settings, $file) . '"';
+        return '"'.parent::getCommand($settings, $file).'"';
     }
 
     protected function getHandles(): array
     {
         if (false === $stdout_handle = tmpfile()) {
-            throw new Exception(
-                'A temporary file could not be created; verify that your TEMP environment variable is writable'
-            );
+            throw new Exception('A temporary file could not be created; verify that your TEMP environment variable is writable');
         }
 
         return [

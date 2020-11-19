@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     collectionOperations={"get"},
  *     itemOperations={"get"}
  * )
- * @ORM\Entity(repositoryClass=CityRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\CityRepository", repositoryClass=CityRepository::class)
  */
 class City
 {
@@ -20,17 +20,17 @@ class City
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $country;
+    private ?string $country;
 
     public function getId(): ?int
     {

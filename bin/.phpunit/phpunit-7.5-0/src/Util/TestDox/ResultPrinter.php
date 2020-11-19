@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,8 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\TestDox;
 
+use function get_class;
+use function in_array;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
@@ -21,8 +25,6 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Throwable;
-use function get_class;
-use function in_array;
 
 /**
  * Base class for printers of TestDox documentation.
@@ -80,12 +82,12 @@ abstract class ResultPrinter extends Printer implements TestListener
     protected $incomplete = 0;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $currentTestClassPrettified;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $currentTestMethodPrettified;
 
@@ -108,10 +110,10 @@ abstract class ResultPrinter extends Printer implements TestListener
     {
         parent::__construct($out);
 
-        $this->groups        = $groups;
+        $this->groups = $groups;
         $this->excludeGroups = $excludeGroups;
 
-        $this->prettifier = new NamePrettifier;
+        $this->prettifier = new NamePrettifier();
         $this->startRun();
     }
 
@@ -136,7 +138,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         $this->testStatus = BaseTestRunner::STATUS_ERROR;
-        $this->failed++;
+        ++$this->failed;
     }
 
     /**
@@ -149,7 +151,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         $this->testStatus = BaseTestRunner::STATUS_WARNING;
-        $this->warned++;
+        ++$this->warned;
     }
 
     /**
@@ -162,7 +164,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         $this->testStatus = BaseTestRunner::STATUS_FAILURE;
-        $this->failed++;
+        ++$this->failed;
     }
 
     /**
@@ -175,7 +177,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         $this->testStatus = BaseTestRunner::STATUS_INCOMPLETE;
-        $this->incomplete++;
+        ++$this->incomplete;
     }
 
     /**
@@ -188,7 +190,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         $this->testStatus = BaseTestRunner::STATUS_RISKY;
-        $this->risky++;
+        ++$this->risky;
     }
 
     /**
@@ -201,7 +203,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         $this->testStatus = BaseTestRunner::STATUS_SKIPPED;
-        $this->skipped++;
+        ++$this->skipped;
     }
 
     /**
@@ -232,13 +234,13 @@ abstract class ResultPrinter extends Printer implements TestListener
         $class = get_class($test);
 
         if ($this->testClass !== $class) {
-            if ($this->testClass !== '') {
+            if ('' !== $this->testClass) {
                 $this->doEndClass();
             }
 
             $this->currentTestClassPrettified = $this->prettifier->prettifyTestClass($class);
-            $this->testClass                  = $class;
-            $this->tests                      = [];
+            $this->testClass = $class;
+            $this->tests = [];
 
             $this->startClass($class);
         }
@@ -261,14 +263,14 @@ abstract class ResultPrinter extends Printer implements TestListener
 
         $this->tests[] = [$this->currentTestMethodPrettified, $this->testStatus];
 
-        $this->currentTestClassPrettified  = null;
+        $this->currentTestClassPrettified = null;
         $this->currentTestMethodPrettified = null;
     }
 
     protected function doEndClass(): void
     {
         foreach ($this->tests as $test) {
-            $this->onTest($test[0], $test[1] === BaseTestRunner::STATUS_PASSED);
+            $this->onTest($test[0], BaseTestRunner::STATUS_PASSED === $test[1]);
         }
 
         $this->endClass($this->testClass);

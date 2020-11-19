@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,9 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\PHP;
 
-use PHPUnit\Framework\Exception;
 use function array_merge;
 use function fclose;
 use function file_put_contents;
@@ -17,6 +18,7 @@ use function fread;
 use function fwrite;
 use function is_array;
 use function is_resource;
+use PHPUnit\Framework\Exception;
 use function proc_close;
 use function proc_open;
 use function proc_terminate;
@@ -46,11 +48,11 @@ class DefaultPhpProcess extends AbstractPhpProcess
     public function runJob(string $job, array $settings = []): array
     {
         if ($this->useTemporaryFile() || $this->stdin) {
-            if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-                file_put_contents($this->tempFile, $job) === false) {
-                throw new Exception(
-                    'Unable to write temporary file'
-                );
+            if (
+                !($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+                false === file_put_contents($this->tempFile, $job)
+            ) {
+                throw new Exception('Unable to write temporary file');
             }
 
             $job = $this->stdin;
@@ -60,7 +62,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * Returns an array of file handles to be used in place of pipes
+     * Returns an array of file handles to be used in place of pipes.
      */
     protected function getHandles(): array
     {
@@ -68,7 +70,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * Handles creating the child process and returning the STDOUT and STDERR
+     * Handles creating the child process and returning the STDOUT and STDERR.
      *
      * @throws Exception
      */
@@ -105,9 +107,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
         );
 
         if (!is_resource($process)) {
-            throw new Exception(
-                'Unable to spawn worker process'
-            );
+            throw new Exception('Unable to spawn worker process');
         }
 
         if ($job) {
@@ -128,19 +128,14 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
                 $n = @stream_select($r, $w, $e, $this->timeout);
 
-                if ($n === false) {
+                if (false === $n) {
                     break;
                 }
 
-                if ($n === 0) {
+                if (0 === $n) {
                     proc_terminate($process, 9);
 
-                    throw new Exception(
-                        sprintf(
-                            'Job execution aborted after %d seconds',
-                            $this->timeout
-                        )
-                    );
+                    throw new Exception(sprintf('Job execution aborted after %d seconds', $this->timeout));
                 }
 
                 if ($n > 0) {
@@ -161,12 +156,12 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
                         $line = fread($pipe, 8192);
 
-                        if ($line === '') {
+                        if ('' === $line) {
                             fclose($pipes[$pipeOffset]);
 
                             unset($pipes[$pipeOffset]);
                         } else {
-                            if ($pipeOffset === 1) {
+                            if (1 === $pipeOffset) {
                                 $stdout .= $line;
                             } else {
                                 $stderr .= $line;

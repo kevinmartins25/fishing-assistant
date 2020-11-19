@@ -22,12 +22,12 @@ class MoonPhase
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $date;
+    private ?\DateTimeInterface $date;
 
     /**
      * @ORM\Column(name="state", length=5,  type="MoonStateType", nullable=false)
@@ -42,7 +42,7 @@ class MoonPhase
      *     }
      * )
      */
-    private $state;
+    private ?string $state;
 
     public function getId(): ?int
     {
