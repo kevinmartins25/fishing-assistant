@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\TestDox;
 
 use function array_map;
@@ -58,11 +60,11 @@ final class TestResult
 
     public function __construct(callable $colorize, string $testClass, string $testMethod)
     {
-        $this->colorize              = $colorize;
-        $this->testClass             = $testClass;
-        $this->testMethod            = $testMethod;
-        $this->testSuccesful         = true;
-        $this->symbol                = ($this->colorize)('fg-green', '✔');
+        $this->colorize = $colorize;
+        $this->testClass = $testClass;
+        $this->testMethod = $testMethod;
+        $this->testSuccesful = true;
+        $this->symbol = ($this->colorize)('fg-green', '✔');
         $this->additionalInformation = '';
     }
 
@@ -73,9 +75,9 @@ final class TestResult
 
     public function fail(string $symbol, string $additionalInformation, bool $additionalInformationVerbose = false): void
     {
-        $this->testSuccesful                = false;
-        $this->symbol                       = $symbol;
-        $this->additionalInformation        = $additionalInformation;
+        $this->testSuccesful = false;
+        $this->symbol = $symbol;
+        $this->additionalInformation = $additionalInformation;
         $this->additionalInformationVerbose = $additionalInformationVerbose;
     }
 
@@ -92,7 +94,7 @@ final class TestResult
             $this->getClassNameHeader($previousTestResult ? $previousTestResult->testClass : null),
             $this->symbol,
             $this->testMethod,
-            $verbose ? ' ' . $this->getFormattedRuntime() : '',
+            $verbose ? ' '.$this->getFormattedRuntime() : '',
             $this->getFormattedAdditionalInformation($verbose)
         );
     }
@@ -147,7 +149,7 @@ final class TestResult
 
     private function additionalInformationPrintable(bool $verbose): bool
     {
-        if ($this->additionalInformation === '') {
+        if ('' === $this->additionalInformation) {
             return false;
         }
 

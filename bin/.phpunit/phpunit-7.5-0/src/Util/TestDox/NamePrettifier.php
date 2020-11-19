@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,14 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\TestDox;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Test;
-use ReflectionException;
-use ReflectionMethod;
-use ReflectionObject;
-use SebastianBergmann\Exporter\Exporter;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -30,8 +26,14 @@ use function is_object;
 use function is_scalar;
 use function is_string;
 use function ord;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Test;
 use function preg_quote;
 use function preg_replace;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionObject;
+use SebastianBergmann\Exporter\Exporter;
 use function sprintf;
 use function str_replace;
 use function strlen;
@@ -68,17 +70,17 @@ final class NamePrettifier
 
         $result = $className;
 
-        if (substr($className, -1 * strlen('Test')) === 'Test') {
+        if ('Test' === substr($className, -1 * strlen('Test'))) {
             $result = substr($result, 0, strripos($result, 'Test'));
         }
 
-        if (strpos($className, 'Tests') === 0) {
+        if (0 === strpos($className, 'Tests')) {
             $result = substr($result, strlen('Tests'));
-        } elseif (strpos($className, 'Test') === 0) {
+        } elseif (0 === strpos($className, 'Test')) {
             $result = substr($result, strlen('Test'));
         }
 
-        if ($result[0] === '\\') {
+        if ('\\' === $result[0]) {
             $result = substr($result, 1);
         }
 
@@ -90,7 +92,7 @@ final class NamePrettifier
      */
     public function prettifyTestCase(TestCase $test): string
     {
-        $annotations                = $test->getAnnotations();
+        $annotations = $test->getAnnotations();
         $annotationWithPlaceholders = false;
 
         $callback = static function (string $variable): string {
@@ -100,10 +102,10 @@ final class NamePrettifier
         if (isset($annotations['method']['testdox'][0])) {
             $result = $annotations['method']['testdox'][0];
 
-            if (strpos($result, '$') !== false) {
-                $annotation   = $annotations['method']['testdox'][0];
+            if (false !== strpos($result, '$')) {
+                $annotation = $annotations['method']['testdox'][0];
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
-                $variables    = array_map($callback, array_keys($providedData));
+                $variables = array_map($callback, array_keys($providedData));
 
                 $result = trim(preg_replace($variables, $providedData, $annotation));
 
@@ -127,7 +129,7 @@ final class NamePrettifier
     {
         $buffer = '';
 
-        if (!is_string($name) || $name === '') {
+        if (!is_string($name) || '' === $name) {
             return $buffer;
         }
 
@@ -135,32 +137,32 @@ final class NamePrettifier
 
         if (in_array($string, $this->strings)) {
             $name = $string;
-        } elseif ($count === 0) {
+        } elseif (0 === $count) {
             $this->strings[] = $string;
         }
 
-        if (strpos($name, 'test_') === 0) {
+        if (0 === strpos($name, 'test_')) {
             $name = substr($name, 5);
-        } elseif (strpos($name, 'test') === 0) {
+        } elseif (0 === strpos($name, 'test')) {
             $name = substr($name, 4);
         }
 
-        if ($name === '') {
+        if ('' === $name) {
             return $buffer;
         }
 
         $name[0] = strtoupper($name[0]);
 
-        if (strpos($name, '_') !== false) {
+        if (false !== strpos($name, '_')) {
             return trim(str_replace('_', ' ', $name));
         }
 
-        $max        = strlen($name);
+        $max = strlen($name);
         $wasNumeric = false;
 
-        for ($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $max; ++$i) {
             if ($i > 0 && ord($name[$i]) >= 65 && ord($name[$i]) <= 90) {
-                $buffer .= ' ' . strtolower($name[$i]);
+                $buffer .= ' '.strtolower($name[$i]);
             } else {
                 $isNumeric = is_numeric($name[$i]);
 
@@ -185,10 +187,10 @@ final class NamePrettifier
      */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
-        $reflector          = new ReflectionMethod(get_class($test), $test->getName(false));
-        $providedData       = [];
+        $reflector = new ReflectionMethod(get_class($test), $test->getName(false));
+        $providedData = [];
         $providedDataValues = array_values($test->getProvidedData());
-        $i                  = 0;
+        $i = 0;
 
         foreach ($reflector->getParameters() as $parameter) {
             if (!array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
@@ -210,12 +212,12 @@ final class NamePrettifier
             }
 
             if (is_bool($value) || is_int($value) || is_float($value)) {
-                $exporter = new Exporter;
+                $exporter = new Exporter();
 
                 $value = $exporter->export($value);
             }
 
-            $providedData['$' . $parameter->getName()] = $value;
+            $providedData['$'.$parameter->getName()] = $value;
         }
 
         return $providedData;

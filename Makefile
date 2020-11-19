@@ -33,4 +33,7 @@ composer-require:
 	$(COMPOSER) require $(COMMAND_ARGS)
 
 php-cs-fix:
-	$(DOCKER_COMPOSE) exec php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
+	$(DOCKER_COMPOSE) exec php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src
+
+console:
+	$(SYMFONY) $(CMD)

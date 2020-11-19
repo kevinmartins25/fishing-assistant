@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,10 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\PHP;
 
 use __PHP_Incomplete_Class;
+use const DIRECTORY_SEPARATOR;
 use ErrorException;
+use function escapeshellarg;
+use const PHP_SAPI;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
@@ -18,10 +23,9 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
+use function restore_error_handler;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use function escapeshellarg;
-use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
 use function str_replace;
@@ -30,8 +34,6 @@ use function strrpos;
 use function substr;
 use function trim;
 use function unserialize;
-use const DIRECTORY_SEPARATOR;
-use const PHP_SAPI;
 
 /**
  * Utility methods for PHP sub-processes.
@@ -71,15 +73,15 @@ abstract class AbstractPhpProcess
     public static function factory(): self
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            return new WindowsPhpProcess;
+            return new WindowsPhpProcess();
         }
 
-        return new DefaultPhpProcess;
+        return new DefaultPhpProcess();
     }
 
     public function __construct()
     {
-        $this->runtime = new Runtime;
+        $this->runtime = new Runtime();
     }
 
     /**
@@ -101,7 +103,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the input string to be sent via STDIN
+     * Sets the input string to be sent via STDIN.
      */
     public function setStdin(string $stdin): void
     {
@@ -109,7 +111,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the input string to be sent via STDIN
+     * Returns the input string to be sent via STDIN.
      */
     public function getStdin(): string
     {
@@ -117,7 +119,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the string of arguments to pass to the php job
+     * Sets the string of arguments to pass to the php job.
      */
     public function setArgs(string $args): void
     {
@@ -125,7 +127,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the string of arguments to pass to the php job
+     * Returns the string of arguments to pass to the php job.
      */
     public function getArgs(): string
     {
@@ -133,7 +135,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the array of environment variables to start the child process with
+     * Sets the array of environment variables to start the child process with.
      *
      * @param array<string, string> $env
      */
@@ -143,7 +145,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the array of environment variables to start the child process with
+     * Returns the array of environment variables to start the child process with.
      */
     public function getEnv(): array
     {
@@ -151,7 +153,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the amount of seconds to wait before timing out
+     * Sets the amount of seconds to wait before timing out.
      */
     public function setTimeout(int $timeout): void
     {
@@ -159,7 +161,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the amount of seconds to wait before timing out
+     * Returns the amount of seconds to wait before timing out.
      */
     public function getTimeout(): int
     {
@@ -202,17 +204,17 @@ abstract class AbstractPhpProcess
         }
 
         if ($file) {
-            $command .= ' ' . escapeshellarg($file);
+            $command .= ' '.escapeshellarg($file);
         }
 
         if ($this->args) {
             if (!$file) {
                 $command .= ' --';
             }
-            $command .= ' ' . $this->args;
+            $command .= ' '.$this->args;
         }
 
-        if ($this->stderrRedirection === true) {
+        if (true === $this->stderrRedirection) {
             $command .= ' 2>&1';
         }
 
@@ -229,7 +231,7 @@ abstract class AbstractPhpProcess
         $buffer = '';
 
         foreach ($settings as $setting) {
-            $buffer .= ' -d ' . escapeshellarg($setting);
+            $buffer .= ' -d '.escapeshellarg($setting);
         }
 
         return $buffer;
@@ -256,14 +258,14 @@ abstract class AbstractPhpProcess
             });
 
             try {
-                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                if (0 === strpos($stdout, "#!/usr/bin/env php\n")) {
                     $stdout = substr($stdout, 19);
                 }
 
                 $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
                 restore_error_handler();
 
-                if ($childResult === false) {
+                if (false === $childResult) {
                     $result->addFailure(
                         $test,
                         new AssertionFailedError('Test was run in child process and ended unexpectedly'),
@@ -281,7 +283,7 @@ abstract class AbstractPhpProcess
                 );
             }
 
-            if ($childResult !== false) {
+            if (false !== $childResult) {
                 if (!empty($childResult['output'])) {
                     $output = $childResult['output'];
                 }
@@ -300,13 +302,13 @@ abstract class AbstractPhpProcess
                     );
                 }
 
-                $time           = $childResult->time();
+                $time = $childResult->time();
                 $notImplemented = $childResult->notImplemented();
-                $risky          = $childResult->risky();
-                $skipped        = $childResult->skipped();
-                $errors         = $childResult->errors();
-                $warnings       = $childResult->warnings();
-                $failures       = $childResult->failures();
+                $risky = $childResult->risky();
+                $skipped = $childResult->skipped();
+                $errors = $childResult->errors();
+                $warnings = $childResult->warnings();
+                $failures = $childResult->failures();
 
                 if (!empty($notImplemented)) {
                     $result->addError(
@@ -351,7 +353,7 @@ abstract class AbstractPhpProcess
         $result->endTest($test, $time);
 
         if (!empty($output)) {
-            print $output;
+            echo $output;
         }
     }
 
@@ -368,7 +370,7 @@ abstract class AbstractPhpProcess
             $exceptionArray = [];
 
             foreach ((array) $exception as $key => $value) {
-                $key                  = substr($key, strrpos($key, "\0") + 1);
+                $key = substr($key, strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
             }
 

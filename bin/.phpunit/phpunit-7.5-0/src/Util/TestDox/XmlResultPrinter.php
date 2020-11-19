@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -7,10 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util\TestDox;
 
+use function array_filter;
 use DOMDocument;
 use DOMElement;
+use function get_class;
+use function implode;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
@@ -22,9 +27,6 @@ use PHPUnit\Util\Printer;
 use ReflectionClass;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Throwable;
-use function array_filter;
-use function get_class;
-use function implode;
 
 class XmlResultPrinter extends Printer implements TestListener
 {
@@ -44,7 +46,7 @@ class XmlResultPrinter extends Printer implements TestListener
     private $prettifier;
 
     /**
-     * @var null|Throwable
+     * @var Throwable|null
      */
     private $exception;
 
@@ -55,13 +57,13 @@ class XmlResultPrinter extends Printer implements TestListener
      */
     public function __construct($out = null)
     {
-        $this->document               = new DOMDocument('1.0', 'UTF-8');
+        $this->document = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
 
         $this->root = $this->document->createElement('tests');
         $this->document->appendChild($this->root);
 
-        $this->prettifier = new NamePrettifier;
+        $this->prettifier = new NamePrettifier();
 
         parent::__construct($out);
     }
@@ -158,7 +160,7 @@ class XmlResultPrinter extends Printer implements TestListener
         $groups = array_filter(
             $test->getGroups(),
             function ($group) {
-                return !($group === 'small' || $group === 'medium' || $group === 'large');
+                return !('small' === $group || 'medium' === $group || 'large' === $group);
             }
         );
 
@@ -184,7 +186,7 @@ class XmlResultPrinter extends Printer implements TestListener
             $node->setAttribute('thenStartLine', (string) $inlineAnnotations['then']['line']);
         }
 
-        if ($this->exception !== null) {
+        if (null !== $this->exception) {
             if ($this->exception instanceof Exception) {
                 $steps = $this->exception->getSerializableTrace();
             } else {
@@ -192,7 +194,7 @@ class XmlResultPrinter extends Printer implements TestListener
             }
 
             $class = new ReflectionClass($test);
-            $file  = $class->getFileName();
+            $file = $class->getFileName();
 
             foreach ($steps as $step) {
                 if (isset($step['file']) && $step['file'] === $file) {

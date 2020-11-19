@@ -1,0 +1,11 @@
+parameters:
+  stateArray: ['winds', 'sun', 'cloud']
+  temperatureArray: ['10', '15', '20', '22' ]
+  windyArray: ['10.5', '0', '5']
+App\Entity\Weather:
+  weather:{1..50}:
+    city: '@city_*'
+    time: <dateTimeBetween('2020-11-01', '2020-11-31')>
+    state: <randomElement($stateArray)>
+    temperature: <randomElement($temperatureArray)>
+    windy: <randomElement($windyArray)>
