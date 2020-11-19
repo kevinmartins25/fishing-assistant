@@ -49,7 +49,6 @@ class Daylight
      */
     private ?City $city;
 
-
     public function getId(): ?int
     {
         return $this->id;

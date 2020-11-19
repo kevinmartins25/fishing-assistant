@@ -23,6 +23,6 @@ final class MoonStateType extends AbstractEnumType
         self::FULL_MOON => 'Full moon',
         self::WANING_GIBBOUS => 'Waning gibbous',
         self::LAST_QUARTER => 'Last quater',
-        self::WANING_CRESCENT => 'Waning crescent'
+        self::WANING_CRESCENT => 'Waning crescent',
     ];
 }
