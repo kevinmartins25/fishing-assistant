@@ -34,3 +34,6 @@ composer-require:
 
 php-cs-fix:
 	$(DOCKER_COMPOSE) exec php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src
+
+console:
+	$(SYMFONY) $(CMD)
