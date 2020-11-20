@@ -1,0 +1,5 @@
+App\Entity\Station:
+  station_1:
+    name: "Mâcon"
+  station_2:
+    name: "Couzon-au-Mont-d'Or"

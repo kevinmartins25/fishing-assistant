@@ -1,0 +1,5 @@
+App\Entity\River:
+  river_1:
+    name: "La Saône"
+  river_2:
+    name: "Le Rhône"
