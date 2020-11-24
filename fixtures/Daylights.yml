@@ -1,6 +1,12 @@
 App\Entity\Daylight:
-  daylight_:{1..10}:
-    date: <dateTimeBetween('2020-11-01', '2020-11-31')>
-    sunrise: <dateTimeBetween('2020-11-01', '2020-11-31')>
-    sunset: <dateTimeBetween('2020-11-01', '2020-11-31')>
-    city: '@city_*'
+  daylight_1:
+    date: <identity(new \DateTimeImmutable('2020-11-01'))>
+    sunrise: <identity(new \DateTimeImmutable('2020-11-01 07:35:18'))>
+    sunset: <identity(new \DateTimeImmutable('2020-11-01 17:25.10'))>
+    city: '@city_1'
+
+  daylight_2:
+    date: <identity(new \DateTimeImmutable('2020-11-02'))>
+    sunrise: <identity(new \DateTimeImmutable('2020-11-02 07:38:00'))>
+    sunset: <identity(new \DateTimeImmutable('2020-11-02 17:30:00'))>
+    city: '@city_1'

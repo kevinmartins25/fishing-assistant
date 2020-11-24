@@ -34,6 +34,10 @@ composer-require:
 
 php-cs-fix:
 	$(DOCKER_COMPOSE) exec php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix src
+	$(DOCKER_COMPOSE) exec php vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix tests
 
 console:
 	$(SYMFONY) $(CMD)
+
+test:
+	$(DOCKER_COMPOSE) exec php bin/phpunit

@@ -5,13 +5,20 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
+ *     collectionOperations={"get", "post"},
  *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository", repositoryClass=CityRepository::class)
+ * @UniqueEntity(
+ *     fields={"name", "country"},
+ *     errorPath="name",
+ *     message="This city already exists."
+ * )
  */
 class City
 {
@@ -24,11 +31,13 @@ class City
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Country()
      */
     private ?string $country;
 

@@ -44,7 +44,7 @@ use function substr;
 use const PHP_EOL;
 
 /**
- * A TestSuite is a composite of Tests. It runs a collection of test cases.
+ * A TestSuite is a composite of tests. It runs a collection of test cases.
  */
 class TestSuite implements IteratorAggregate, SelfDescribing, Test
 {

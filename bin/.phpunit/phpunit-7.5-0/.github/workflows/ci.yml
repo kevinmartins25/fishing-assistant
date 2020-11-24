@@ -37,7 +37,7 @@ jobs:
           args: bash ./build/lint-xml-configuration
 
   tests:
-    name: Tests
+    name: tests
 
     runs-on: ubuntu-latest
 

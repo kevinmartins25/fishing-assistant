@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\StationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -12,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass=StationRepository::class)
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     errorPath="name",
+ *     message="This station already exists."
+ * )
  */
 class Station
 {
@@ -20,12 +27,13 @@ class Station
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
-    private $name;
+    private ?string $name;
 
     public function getId(): ?int
     {

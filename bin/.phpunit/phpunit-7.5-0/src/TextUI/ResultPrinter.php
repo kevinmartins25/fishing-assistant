@@ -489,7 +489,7 @@ class ResultPrinter extends Printer implements TestListener
                 }
             }
 
-            $this->writeCountString(count($result), 'Tests', $color, true);
+            $this->writeCountString(count($result), 'tests', $color, true);
             $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
             $this->writeCountString($result->errorCount(), 'Errors', $color);
             $this->writeCountString($result->failureCount(), 'Failures', $color);

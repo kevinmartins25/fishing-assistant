@@ -74,8 +74,8 @@ final class NamePrettifier
             $result = substr($result, 0, strripos($result, 'Test'));
         }
 
-        if (0 === strpos($className, 'Tests')) {
-            $result = substr($result, strlen('Tests'));
+        if (0 === strpos($className, 'tests')) {
+            $result = substr($result, strlen('tests'));
         } elseif (0 === strpos($className, 'Test')) {
             $result = substr($result, strlen('Test'));
         }

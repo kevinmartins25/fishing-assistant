@@ -294,7 +294,7 @@ final class TestSuiteSorter
     }
 
     /**
-     * Reorder Tests within a TestCase in such a way as to resolve as many dependencies as possible.
+     * Reorder tests within a TestCase in such a way as to resolve as many dependencies as possible.
      * The algorithm will leave the tests in original running order when it can.
      * For more details see the documentation for test dependencies.
      *

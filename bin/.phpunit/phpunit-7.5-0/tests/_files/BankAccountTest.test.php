@@ -10,7 +10,7 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * Tests for the BankAccount class.
+ * tests for the BankAccount class.
  */
 class BankAccountWithCustomExtensionTest extends TestCase
 {

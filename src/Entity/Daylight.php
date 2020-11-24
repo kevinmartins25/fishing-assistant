@@ -7,16 +7,23 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use App\Repository\DaylightRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DaylightRepository::class)
- *@ApiResource(
+ * @ApiResource(
  *     collectionOperations={"get","post"},
  *     itemOperations={"get"}
  * )
  * @ApiFilter(
  *     DateFilter::class,
  *     properties={"date"}
+ * )
+ * @UniqueEntity(
+ *     fields={"date", "city"},
+ *     errorPath="date",
+ *     message="This dayligth already exists for this date and city."
  * )
  */
 class Daylight
@@ -35,6 +42,7 @@ class Daylight
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\LessThan(propertyPath="sunset")
      */
     private ?\DateTimeInterface $sunrise;
 

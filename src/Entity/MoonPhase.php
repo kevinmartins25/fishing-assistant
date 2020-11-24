@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\MoonPhaseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
@@ -14,6 +15,11 @@ use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
  *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass=MoonPhaseRepository::class)
+ * @UniqueEntity(
+ *     fields={"date"},
+ *     errorPath="date",
+ *     message="This moon phase already exists for this date."
+ * )
  */
 class MoonPhase
 {

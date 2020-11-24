@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WeatherRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -25,26 +26,32 @@ class Weather
     /**
      * @ORM\ManyToOne(targetEntity=City::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private ?City $city;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
      */
     private ?\DateTimeInterface $time;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\GreaterThanOrEqual(value="0")
+     * @Assert\NotBlank()
      */
     private ?float $windy;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private ?float $temperature;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private ?string $state;
 

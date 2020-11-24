@@ -436,7 +436,7 @@ class Command
                     print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
                     $bootstrapScript = trim(fgets(STDIN));
 
-                    print 'Tests directory (relative to path shown above; default: tests): ';
+                    print 'tests directory (relative to path shown above; default: tests): ';
                     $testsDirectory = trim(fgets(STDIN));
 
                     print 'Source directory (relative to path shown above; default: src): ';

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WaterHeightRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -20,29 +21,35 @@ class WaterHeight
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\GreaterThanOrEqual(value="0")
+     * @Assert\NotBlank()
      */
-    private $value;
+    private ?float $value;
 
     /**
      * @ORM\ManyToOne(targetEntity=Station::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
-    private $station;
+    private ?Station $station;
 
     /**
      * @ORM\ManyToOne(targetEntity=River::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
-    private $river;
+    private ?River $river;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\LessThan("tomorrow UTC")
+     * @Assert\NotBlank()
      */
-    private $dateTime;
+    private ?\DateTimeInterface $dateTime;
 
     public function getId(): ?int
     {
