@@ -8,7 +8,7 @@ use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
-class WaterHeightTestextends extends ApiTestCase
+class WaterHeightTest extends ApiTestCase
 {
     use RefreshDatabaseTrait;
 

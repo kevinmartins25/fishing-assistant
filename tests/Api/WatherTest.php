@@ -7,7 +7,7 @@ use App\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
-class WatherTestextends extends ApiTestCase
+class WatherTest extends ApiTestCase
 {
     use RefreshDatabaseTrait;
 

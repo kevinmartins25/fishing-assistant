@@ -31,3 +31,13 @@ jobs:
               run: curl http://localhost
             - name: Check HTTPS reachability
               run: curl -k https://localhost
+            - name: Test drop db
+              run: docker-compose exec -T php php bin/console doctrine:database:drop --if-exists -f
+            - name: Test create db
+              run: docker-compose exec -T php php bin/console doctrine:database:create
+            - name: Test schema update db
+              run:  docker-compose exec -T php php bin/console doctrine:schema:update -f
+            - name: Test load fixtures
+              run: docker-compose exec -T php php bin/console hautelook:fixtures:load
+            - name: Load tests
+              run: docker-compose exec -T php php bin/phpunit
